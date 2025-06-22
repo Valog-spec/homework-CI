@@ -10,11 +10,7 @@ from hw.main.models import (
     db,
     get_client,
 )
-from hw.main.schemas import (
-    ClientParkingSchema,
-    ClientSchema,
-    ParkingSchema,
-)
+from hw.main.schemas import ClientParkingSchema, ClientSchema, ParkingSchema
 
 
 def create_app() -> Flask:
