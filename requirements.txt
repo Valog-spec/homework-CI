@@ -11,3 +11,7 @@ sqlalchemy
 flask-sqlalchemy
 faker
 factory-boy
+fastapi
+pydantic
+aiosqlite
+greenlet
