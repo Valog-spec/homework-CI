@@ -1,10 +1,11 @@
+import datetime
 from datetime import timedelta
 
 import pytest
-import datetime
 
-from hw.main.models import db as _db, Client, ClientParking, Parking
 from hw.main.flaskr.app import create_app
+from hw.main.models import Client, ClientParking, Parking
+from hw.main.models import db as _db
 
 
 @pytest.fixture

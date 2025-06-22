@@ -1,6 +1,6 @@
-import pytest
-
 import datetime
+
+import pytest
 
 from hw.main.models import Parking
 

@@ -1,5 +1,6 @@
-from .flaskr.app import create_app
 from flask import Flask
+
+from .flaskr.app import create_app
 
 app: Flask = create_app()
 

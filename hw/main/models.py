@@ -1,6 +1,7 @@
+import datetime
+
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
-import datetime
 
 from hw.main.schemas import ClientParkingSchema
 

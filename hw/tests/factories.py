@@ -1,7 +1,8 @@
 import factory
 from factory.fuzzy import FuzzyChoice
 from faker import Faker
-from hw.main.models import Client, db, Parking
+
+from hw.main.models import Client, Parking, db
 
 fake = Faker()
 
