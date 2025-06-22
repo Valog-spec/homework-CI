@@ -20,11 +20,12 @@ jobs:
         run: |
           pip install -r hw/requirements.txt
           pip install --upgrade markupsafe
+          echo -e "[mypy]\npython_version = 3.11\n\n[mypy-markupsafe._speedups]\nignore_errors = True" > mypy_temp.ini
       - name: Run pytest
         run: pytest hw/tests/
 
       - name: Run mypy
-        run: python -m mypy --python-version 3.11 --config-file=<(echo "[mypy-markupsafe._speedups]"; echo "ignore_errors = True") hw/
+        run: python -m mypy --config-file mypy_temp.ini hw/
 
       - name: Run black
         run: black --diff --check hw/
