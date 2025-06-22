@@ -1,0 +1,38 @@
+name: Python CI
+
+on:
+  push:
+  pull_request:      
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Run pytest
+        run: pytest hw/tests/
+
+      - name: Run mypy
+        run: mypy hw/
+
+      - name: Run black
+        run: black --diff --check hw/
+
+      - name: Run isort
+        run: isort --check-only --diff --profile black hw/
+
+      - name: Run flake8
+        run: flake8 hw/
