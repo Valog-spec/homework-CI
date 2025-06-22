@@ -19,7 +19,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r hw/requirements.txt
-          # pip install "click<8.1.0" black
       - name: Run pytest
         run: pytest hw/tests/
 
