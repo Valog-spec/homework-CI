@@ -20,7 +20,7 @@ jobs:
         run: |
           pip install -r requirements.txt
       - name: Run pytest
-        run: pytest fast-api/tests/
+        run: pytest fast-api/test_main.py
 
       # - name: Run mypy
       #   run: mypy fast-api/
