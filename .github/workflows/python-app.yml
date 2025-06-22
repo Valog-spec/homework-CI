@@ -24,7 +24,7 @@ jobs:
         run: pytest hw/tests/
 
       - name: Run mypy
-        run: python -m mypy --python-version 3.11 hw/
+        run: python -m mypy --python-version 3.11 --config-file=<(echo "[mypy-markupsafe._speedups]"; echo "ignore_errors = True") hw/
 
       - name: Run black
         run: black --diff --check hw/
