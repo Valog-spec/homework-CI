@@ -1,19 +1,19 @@
 from contextlib import asynccontextmanager
-from typing import Annotated, List
+from typing import Annotated, List, AsyncIterator, AsyncGenerator
 
-import models
-from database import async_engine, async_session
 from fastapi import Depends, FastAPI
-from models import RecipeModel
-from schemas import RecipeIn, RecipeOutDetail, RecipeOutShort
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from database import async_engine, async_session
+from models import Base, RecipeModel
+from schemas import RecipeIn, RecipeOutDetail, RecipeOutShort
+
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     async with async_engine.begin() as conn:
-        await conn.run_sync(models.Base.metadata.create_all)
+        await conn.run_sync(Base.metadata.create_all)
         yield
         await async_session().close()
         await async_engine.dispose()
@@ -22,7 +22,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan, title="Website about recipes")
 
 
-async def get_session():
+async def get_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session.begin() as session:
         yield session
 
@@ -36,8 +36,8 @@ SessionDep = Annotated[AsyncSession, Depends(get_session)]
     summary="Получение всех рецептов",
     tags=["Информация об рецептах"],
 )
-async def get_all_recipes(session: SessionDep):
-    query = select(models.RecipeModel)
+async def get_all_recipes(session: SessionDep) -> List[RecipeOutDetail]:
+    query = select(RecipeModel)
     res = await session.execute(query)
     recipes = res.scalars().all()
 
@@ -52,9 +52,10 @@ async def get_all_recipes(session: SessionDep):
     summary="Получение рецепта по id",
     tags=["Операции с рецептами"],
 )
-async def get_by_id(recipe_id: int, session: SessionDep):
+async def get_by_id(recipe_id: int, session: SessionDep) -> RecipeOutDetail:
     res = await session.get(RecipeModel, recipe_id)
-    res.views_count += 1
+    if res:
+        res.views_count += 1
     await session.commit()
 
     return RecipeOutDetail.model_validate(res, from_attributes=True)
@@ -79,7 +80,7 @@ async def add_new_recipe(recipe: RecipeIn, session: SessionDep) -> RecipeModel:
     tags=["Информация об рецептах"],
     summary="Получение всех рецептов",
 )
-async def screen_1(session: SessionDep):
+async def screen_1(session: SessionDep) -> List[RecipeOutShort]:
     query = select(RecipeModel).order_by(
         RecipeModel.views_count.desc(), RecipeModel.cooking_time.asc()
     )
@@ -97,7 +98,7 @@ async def screen_1(session: SessionDep):
     tags=["Информация об рецептах"],
     summary="Детальная информация об рецептах",
 )
-async def screen_2(session: SessionDep):
+async def screen_2(session: SessionDep) -> List[RecipeOutDetail]:
     query = select(RecipeModel)
     res = await session.execute(query)
     return [

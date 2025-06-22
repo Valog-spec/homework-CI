@@ -11,3 +11,12 @@ exclude = '''
     | __pycache__
 )/
 '''
+
+[tool.mypy]
+#plugins = "sqlalchemy.ext.mypy.plugin"
+disallow_untyped_defs = true
+strict_optional = true
+
+[[tool.mypy.overrides]]
+module = "sqlalchemy.*"
+ignore_missing_imports = false
