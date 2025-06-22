@@ -15,3 +15,4 @@ fastapi
 pydantic
 aiosqlite
 greenlet
+httpx
