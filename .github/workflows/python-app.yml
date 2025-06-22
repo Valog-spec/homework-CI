@@ -25,8 +25,8 @@ jobs:
       - name: Run pytest
         run: pytest hw/tests/
 
-      # - name: Run mypy
-      #   run: python -m mypy --config-file mypy_temp.ini hw/
+      - name: Run mypy
+        run: mypy hw/
 
       - name: Run black
         run: black --diff --check hw/
