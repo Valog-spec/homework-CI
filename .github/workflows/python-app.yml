@@ -19,9 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r hw/requirements.txt
-          # pip install --upgrade markupsafe
-          pip install "click<8.1.0" black
-          # echo -e "[mypy]\npython_version = 3.11\n\n[mypy-markupsafe._speedups]\nignore_errors = True" > mypy_temp.ini
+          # pip install "click<8.1.0" black
       - name: Run pytest
         run: pytest hw/tests/
 
