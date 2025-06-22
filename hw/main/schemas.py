@@ -23,10 +23,3 @@ class ClientParkingSchema(Schema):
     parking_id = fields.Int(required=True)
     time_in = fields.DateTime()
     time_out = fields.DateTime()
-
-    # @validates_schema
-    # def validate_ids(self, data, **kwargs):
-    #     if 'client_id' in data:
-    #         if not search_client(data["client_id"]):
-    #             print("hi")
-    #             raise ValidationError(f"Клиента с id: {data["client_id"]} нет")

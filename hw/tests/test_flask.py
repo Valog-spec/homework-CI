@@ -1,5 +1,3 @@
-import datetime
-
 import pytest
 
 from hw.main.models import Parking
@@ -56,6 +54,6 @@ def test_out_parking_space(client, db, sample_client, sample_parking):
 
     assert park.count_available_places == 76
     assert sample_client.json["car_number"] is not None
-    assert sample_parking.json["opened"] == True
+    assert sample_parking.json["opened"]
     assert response.status_code == 201
     assert response.json["time_in"] < response.json["time_out"]

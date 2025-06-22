@@ -70,9 +70,8 @@ def sample_client(client):
         "credit_card": "12345",
         "car_number": "NV123V999",
     }
-    response = client.post("/clients", json=client_data)
 
-    return response
+    return client.post("/clients", json=client_data)
 
 
 @pytest.fixture
@@ -83,6 +82,5 @@ def sample_parking(client):
         "count_places": 10,
         "count_available_places": 76,
     }
-    response = client.post("/parking", json=parking_date)
 
-    return response
+    return client.post("/parking", json=parking_date)

@@ -58,9 +58,7 @@ def add_client(data):
 
 
 def get_client(idx):
-    client = Client.query.filter(Client.id == idx).one()
-
-    return client
+    return Client.query.filter(Client.id == idx).one()
 
 
 def add_park(data):
@@ -72,16 +70,11 @@ def add_park(data):
 
 
 def search_client(idx):
-    client = Client.query.filter(Client.id == idx).one()
-    if client:
-        return True
-    return False
+    return bool(Client.query.filter(Client.id == idx).one())
 
 
 def client_try_parking(data):
-    # client = Client.query.filter(Client.id == data["client_id"]).one()
     client = db.session.get(Client, data["client_id"])
-    # park = Parking.query.filter(Parking.id == data["parking_id"]).one()
     park = db.session.get(Parking, data["parking_id"])
     if not client:
         return {"message": "Вас нет в базу данных"}
@@ -89,9 +82,10 @@ def client_try_parking(data):
         return {"message": "Такой парковки не сущетсвует"}
     elif client.credit_card is None:
         return {
-            "message": "К сожелению вы не можете заехать на парковку так как вы не привезали банковскую карту"
+            "message": "К сожелению вы не можете заехать на парковку"
+            "так как вы не привезали банковскую карту"
         }
-    elif park.count_available_places > 0 and park.opened == True:
+    elif park.count_available_places > 0 and park.opened:
         park.count_available_places -= 1
         client_parking = ClientParking(
             client_id=data["client_id"],
@@ -99,7 +93,6 @@ def client_try_parking(data):
             time_in=datetime.datetime.now(datetime.UTC),
         )
         db.session.add(client_parking)
-
         try:
             db.session.commit()
         except IntegrityError:
