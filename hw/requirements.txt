@@ -9,3 +9,5 @@ marshmallow
 flask
 sqlalchemy
 flask-sqlalchemy
+faker
+factory-boy
