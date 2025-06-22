@@ -26,7 +26,7 @@ jobs:
         run: pytest hw/tests/
 
       - name: Run mypy
-        run: mypy hw/
+        run: python -m mypy --python-version 3.11 hw/
 
       - name: Run black
         run: black --diff --check hw/
