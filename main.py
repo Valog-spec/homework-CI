@@ -1,5 +1,5 @@
 from contextlib import asynccontextmanager
-from typing import Annotated, List, AsyncIterator, AsyncGenerator
+from typing import Annotated, AsyncGenerator, AsyncIterator, List
 
 from fastapi import Depends, FastAPI
 from sqlalchemy import select
