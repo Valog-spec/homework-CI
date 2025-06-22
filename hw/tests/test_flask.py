@@ -26,7 +26,8 @@ def test_create_parking(client, sample_parking):
 @pytest.mark.parking
 def test_in_parking_space(client, db, sample_client, sample_parking):
     client_parking = {
-        "client_id": sample_client.json["id"], "parking_id": sample_parking.json["id"],
+        "client_id": sample_client.json["id"],
+        "parking_id": sample_parking.json["id"],
     }
 
     park = db.session.get(Parking, sample_parking.json["id"])
@@ -43,7 +44,8 @@ def test_in_parking_space(client, db, sample_client, sample_parking):
 @pytest.mark.parking
 def test_out_parking_space(client, db, sample_client, sample_parking):
     client_parking = {
-        "client_id": sample_client.json["id"], "parking_id": sample_parking.json["id"],
+        "client_id": sample_client.json["id"],
+        "parking_id": sample_parking.json["id"],
     }
 
     client.post("/client_parking", json=client_parking)

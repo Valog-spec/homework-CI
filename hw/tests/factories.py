@@ -5,6 +5,7 @@ from hw.main.models import Client, db, Parking
 
 fake = Faker()
 
+
 class ClientFactory(factory.alchemy.SQLAlchemyModelFactory):
 
     class Meta:
@@ -14,7 +15,7 @@ class ClientFactory(factory.alchemy.SQLAlchemyModelFactory):
     name = factory.Faker("first_name")
     surname = factory.Faker("last_name")
     credit_card = fake.credit_card_number()
-    car_number = fake.bothify("??###?##", letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    car_number = fake.bothify("??###?##", letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 
 class ParkingFactory(factory.alchemy.SQLAlchemyModelFactory):
@@ -26,4 +27,3 @@ class ParkingFactory(factory.alchemy.SQLAlchemyModelFactory):
     opened = FuzzyChoice([True, False])
     count_places = factory.Faker("random_int", min=50, max=100)
     count_available_places = factory.Faker("random_int", min=30, max=50)
-

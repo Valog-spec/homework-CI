@@ -7,7 +7,7 @@ from hw.main.schemas import ClientParkingSchema
 db = SQLAlchemy()
 
 
-class Client(db.Model): # type: ignore
+class Client(db.Model):  # type: ignore
     __tablename__ = "client"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -19,7 +19,7 @@ class Client(db.Model): # type: ignore
     parkings = db.relationship("ClientParking", back_populates="client")
 
 
-class Parking(db.Model): # type: ignore
+class Parking(db.Model):  # type: ignore
     __tablename__ = "parking"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -31,7 +31,7 @@ class Parking(db.Model): # type: ignore
     clients = db.relationship("ClientParking", back_populates="parking")
 
 
-class ClientParking(db.Model): # type: ignore
+class ClientParking(db.Model):  # type: ignore
     __tablename__ = "client_parking"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -79,7 +79,7 @@ def search_client(idx):
 
 def client_try_parking(data):
     # client = Client.query.filter(Client.id == data["client_id"]).one()
-    client = db.session.get(Client, data["client_id"] )
+    client = db.session.get(Client, data["client_id"])
     # park = Parking.query.filter(Parking.id == data["parking_id"]).one()
     park = db.session.get(Parking, data["parking_id"])
     if not client:
@@ -87,12 +87,16 @@ def client_try_parking(data):
     elif not park:
         return {"message": "Такой парковки не сущетсвует"}
     elif client.credit_card is None:
-        return {"message": "К сожелению вы не можете заехать на парковку так как вы не привезали банковскую карту"}
+        return {
+            "message": "К сожелению вы не можете заехать на парковку так как вы не привезали банковскую карту"
+        }
     elif park.count_available_places > 0 and park.opened == True:
         park.count_available_places -= 1
-        client_parking = ClientParking(client_id=data["client_id"], parking_id=data["parking_id"],
-                                       time_in=datetime.datetime.now(datetime.UTC),
-                                       )
+        client_parking = ClientParking(
+            client_id=data["client_id"],
+            parking_id=data["parking_id"],
+            time_in=datetime.datetime.now(datetime.UTC),
+        )
         db.session.add(client_parking)
 
         try:
@@ -108,15 +112,12 @@ def client_try_parking(data):
 def client_delete_parking(data):
     client = db.session.get(Client, data["client_id"])
     park = db.session.get(Parking, data["parking_id"])
-    client_parking = ClientParking.query.filter(ClientParking.client_id == client.id,
-                                                ClientParking.parking_id == park.id).one()
+    client_parking = ClientParking.query.filter(
+        ClientParking.client_id == client.id, ClientParking.parking_id == park.id
+    ).one()
     if client_parking:
         park.count_available_places += 1
         client_parking.time_out = datetime.datetime.now(datetime.UTC)
         db.session.commit()
         return client_parking
     return "Не верные данные"
-
-
-
-
