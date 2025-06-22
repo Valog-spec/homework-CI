@@ -20,16 +20,16 @@ jobs:
         run: |
           pip install -r requirements.txt
       - name: Run pytest
-        run: pytest fast-api/test_main.py
+        run: pytest .
 
-      # - name: Run mypy
-      #   run: mypy fast-api/
+      - name: Run mypy
+        run: mypy .
 
       - name: Run black
-        run: black --diff --check fast-api/
+        run: black --diff --check .
 
       - name: Run isort
-        run: isort --check-only --diff --profile black fast-api/
+        run: isort --check-only --diff --profile black .
 
       - name: Run flake8
-        run: flake8 fast-api/
+        run: flake8 .
